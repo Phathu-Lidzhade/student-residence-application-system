@@ -74,11 +74,11 @@ require_once 'includes/login_view.inc.php';
 
 <p>To return to student page <a href="../student-signup/index.php" class="button2">click here</a></p>
 
-<!--<h3>Admin Logout</h3>
-
-<form action="includes/logout.inc.php" method="post">
-    <button>Logout</button>
-</form>-->
+<div style="margin-top: 30px;">
+    <form action="includes/logout.inc.php" method="post">
+        <button type="submit" class="btn">Logout</button>
+    </form>
+</div>
 
 </div>
 

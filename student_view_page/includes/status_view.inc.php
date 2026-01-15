@@ -1,55 +1,41 @@
 <?php
-
 declare(strict_types=1);
 
-//require_once 'includes/dbh.inc.php';
-
-function check_errors(){
-    if(isset($_SESSION["errors_status"])){
-        $errors = $_SESSION["errors_status"];
-
-        echo "<br>";
-
-        foreach ($errors as $error) {
-            echo '<p class="form-error">' . $error . '</p>';
+function check_errors() {
+    if (isset($_SESSION['errors_status'])) {
+        foreach ($_SESSION['errors_status'] as $error) {
+            echo '<p class="form-error">' . htmlspecialchars($error) . '</p>';
         }
-
-        unset($_SESSION["errors_status"]);
-    } elseif (isset($_GET['login']) && $_GET['login'] === "success") {
-        
+        unset($_SESSION['errors_status']);
     }
 }
 
-//$products = get_user($pdo, $studentno);
-/*$result = get_user($pdo, $studentno);
-
-function display_table($result) {
-    echo '<table>';
-    echo '<thead>';
-    echo '<tr>';
-    echo '<th>ID</th>';
-    echo '<th>Student Number</th>';
-    echo '<th>First Name</th>';
-    echo '<th>Surname</th>';
-    echo '<th>Gender</th>';
-    echo '<th>Created At</th>';
-    echo '<th>Residence</th>';
-    echo '</tr>';
-    echo '</thead>';
-    echo '<tbody>';
-    
-    foreach ($result as $results) {
-        echo '<tr>';
-        echo '<td>' . $results['id'] . '</td>';
-        echo '<td>' . $results['studentno'] . '</td>';
-        echo '<td>' . $results['firstname'] . '</td>';
-        echo '<td>' . $results['surname'] . '</td>';
-        echo '<td>' . $results['gender'] . '</td>';
-        echo '<td>' . $results['created_at'] . '</td>';
-        echo '<td>' . $results['residence'] . '</td>';
-        echo '</tr>';
+// Display table of student applications
+function display_applications_table(array $applications, array $student) {
+    echo '<h3>Applications for: ' . htmlspecialchars($student['full_name']) . '</h3>';
+    if (!$applications) {
+        echo '<p>No applications found.</p>';
+        return;
     }
 
+    echo '<table border="1">';
+    echo '<thead>
+            <tr>
+                <th>Application ID</th>
+                <th>Residence</th>
+                <th>Status</th>
+                <th>Applied At</th>
+            </tr>
+          </thead>';
+    echo '<tbody>';
+    foreach ($applications as $app) {
+        echo '<tr>';
+        echo '<td>' . $app['application_id'] . '</td>';
+        echo '<td>' . htmlspecialchars($app['residence_name']) . '</td>';
+        echo '<td>' . ucfirst($app['status']) . '</td>';
+        echo '<td>' . $app['created_at'] . '</td>';
+        echo '</tr>';
+    }
     echo '</tbody>';
     echo '</table>';
-}*/
+}

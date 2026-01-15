@@ -1,75 +1,83 @@
 <?php
-require_once 'includes/config_session.inc.php';
-require_once 'includes/display_model.inc.php';
+session_start();
+require_once 'includes/dbh.inc.php';
+require_once 'includes/admin_model.inc.php';
+require_once 'includes/admin_view.inc.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/styles.css">
-    <title>Submissions page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Review Applications</title>
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-    <header class="header">
-        <div class="logo">
-            <h1>Admin Page</h1>
-        </div>
-    </header>
+<header class="header">
+    <h1>Admin Page</h1>
+</header>
 
 <div class="container">
-
-    <h2>Records</h2>
+    <h2>Student Applications</h2>
 
     <table border="1">
         <thead>
             <tr>
-                <th>ID</th>
+                <th>Application ID</th>
                 <th>Student Number</th>
-                <th>First Name</th>
-                <th>Surname</th>
-                <th>Gender</th>
-                <th>Created At</th>
+                <th>Student Name</th>
                 <th>Residence</th>
+                <th>Status</th>
+                <th>Applied At</th>
+                <th>Change Status</th>
             </tr>
         </thead>
         <tbody>
-
             <?php
-            if (!empty($rows)): ?>
-            
-            <?php foreach($rows as $row): ?>
+            $applications = get_all_applications($pdo);
 
-                <tr>
-                    <td><?php echo htmlspecialchars($row['id']); ?></td>
-                    <td><?php echo htmlspecialchars($row['studentno']); ?></td>
-                    <td><?php echo htmlspecialchars($row['firstname']); ?></td>
-                    <td><?php echo htmlspecialchars($row['surname']); ?></td>
-                    <td><?php echo htmlspecialchars($row['gender']); ?></td>
-                    <td><?php echo htmlspecialchars($row['created_at']); ?></td>
-                    <td><?php echo htmlspecialchars($row['residence']); ?></td>
-                </tr>
-
-                <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="7">
-                            No records found
-                        </td>
-                    </tr>
-                    <?php endif; ?>
-
+            if ($applications):
+                foreach ($applications as $app):
+            ?>
+            <tr>
+                <td><?= $app['application_id'] ?></td>
+                <td><?= htmlspecialchars($app['student_number']) ?></td>
+                <td><?= htmlspecialchars($app['full_name']) ?></td>
+                <td><?= htmlspecialchars($app['residence_name']) ?></td>
+                <td><?= ucfirst($app['status']) ?></td>
+                <td><?= $app['created_at'] ?></td>
+                <td>
+                    <form action="includes/admin_update_status.inc.php" method="post">
+                        <input type="hidden" name="application_id" value="<?= $app['application_id'] ?>">
+                        <select name="new_status" required>
+                            <option value="">--Select--</option>
+                            <option value="pending">Pending</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            <?php
+                endforeach;
+            else:
+            ?>
+            <tr>
+                <td colspan="7">No applications found</td>
+            </tr>
+            <?php endif; ?>
         </tbody>
     </table>
-    <br>
 
-    <form action="includes/logout.inc.php" method="post">
-        <button>Logout</button>
-    </form>
+    <div style="margin-top: 30px;">
+        <form action="includes/logout.inc.php" method="post">
+            <button type="submit" class="btn">Logout</button>
+        </form>
     </div>
+</div>
 
 </body>
 </html>

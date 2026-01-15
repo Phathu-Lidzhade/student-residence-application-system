@@ -4,5 +4,5 @@ session_start();
 session_unset();
 session_destroy();
 
-header("Location: ../../complete/index.php");
+header("Location: ../../student-signup/index.php");
 die();

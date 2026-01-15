@@ -1,7 +1,7 @@
 <?php
 
 $host = 'localhost';
-$dbname = 'myfirstdatabase';
+$dbname = 'student-application-db';
 $dbusername = 'root';
 $dbpassword = '';
 

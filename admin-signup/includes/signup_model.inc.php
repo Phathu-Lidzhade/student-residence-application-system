@@ -12,7 +12,7 @@ function get_username(object $pdo, string $username) {
     return $result;
 }
 
-function is_admidcodec_invalid(object $pdo, string $username) {
+function is_admidcodec_invalid(object $pdo, string $admidcodec) {
     $query = "SELECT admidcodec FROM admins WHERE admidcodec = :admidcodec;";
     $stmt = $pdo->prepare($query);
     $stmt->bindparam(":admidcodec", $admidcodec);

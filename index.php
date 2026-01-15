@@ -19,7 +19,9 @@
 
     <h2>wellcome to the home page</h2>
     <br><br><br>
-    <a href="student-signup/index.php" class="button">Click here</a>
+    <div style="text-align: center;">
+        <a href="student-signup/index.php" class="button">Click here</a>
+    </div>
 
     </div>
 </body>

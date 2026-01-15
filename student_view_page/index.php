@@ -1,155 +1,220 @@
 <?php
-include('includes/dbh.inc.php');
-//require_once 'includes/dbh.inc.php';
-require_once 'includes/config_session.inc.php';
+session_start();
+require_once 'includes/dbh.inc.php';
 require_once 'includes/status_model.inc.php';
 require_once 'includes/status_view.inc.php';
+
+// Check if user is logged in
+if (!isset($_SESSION['user_studentno']) || !isset($_SESSION['user_id'])) {
+    header("Location: ../student-signup/index.php");
+    exit;
+}
+
+// Get student info from session and database
+$student_id = $_SESSION['user_id'];
+$student = get_student_by_id($pdo, $student_id);
+$applications = get_student_applications($pdo, $student_id);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status</title>
     <link rel="stylesheet" href="css/styles.css">
-    <title>Status</title>
-</head>
-<body>
+    <style>
+        .welcome-text {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
 
-<header class="header">
-        <div class="logo">
-            <h1>Student Page</h1>
-        </div>
-    </header>
+        .student-info-box {
+            background-color: #f8f9fa;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
 
-<div class="container">
+        .student-info-box h3 {
+            color: #007bff;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
 
-    <h2>Status</h2>
-    <!--action="includes/status.inc.php"-->
-    <form  method="post">
-        <label for="studentno">Enter your Student Number</label>
-        <br>
-        <input type="text" name="studentno" placeholder="Student Number">
-        <br><br>
-        <button>Submit</button>
-    </form>
-    
-    <div class="errors">
-    <?php
-    check_errors();
-    ?>
-    </div>
-    
-    <br>
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
 
-    <?php
-    // display_table()
-    ?>
+        .info-row label {
+            font-weight: 600;
+            color: #555;
+        }
 
-    <?php
-    //table_data()
-    ?>
+        .info-row value {
+            color: #333;
+        }
 
-    <br>
+        .status-pending {
+            color: #ff9800;
+            font-weight: 600;
+        }
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Student Number</th>
-                <th>First Name</th>
-                <th>Surname</th>
-                <th>Gender</th>
-                <th>Created At</th>
-                <th>Residence</th>
-            </tr>
+        .status-accepted {
+            color: #4caf50;
+            font-weight: 600;
+        }
 
-            <?php
+        .status-rejected {
+            color: #f44336;
+            font-weight: 600;
+        }
 
-            if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                $selected_studentno = $_POST["studentno"];
+        .no-applications {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeaa7;
+        }
 
-                try {
-                    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $dbusername, $dbpassword);
-                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
 
-                    $query = "SELECT * FROM submissions WHERE studentno = :studentno";
-                    $stmt = $pdo->prepare($query);
-                    $stmt->bindparam(":studentno", $studentno);
-                    $stmt->execute(['studentno' => $selected_studentno]);
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
 
-                    //$result = $stmt->get_result();
-                    //return $result;
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
 
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        echo "<tr>";
-                        echo "<td>" . $row["id"] . "</td>";
-                        echo "<td>" . $row["studentno"] . "</td>";
-                        echo "<td>" . $row["firstname"] . "</td>";
-                        echo "<td>" . $row["surname"] . "</td>";
-                        echo "<td>" . $row["gender"] . "</td>";
-                        echo "<td>" . $row["created_at"] . "</td>";
-                        echo "<td>" . $row["residence"] . "</td>";
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
             }
 
-                } catch (PDOException $e) {
-                    die("Connection failed: " . $e->getMessage());
-                }
+            h1 {
+                font-size: 24px;
+            }
 
-                $pdo = null;
+            h2 {
+                font-size: 18px;
+            }
 
-            ?>
+            table {
+                font-size: 14px;
+            }
 
-        </thead>
-        <tbody>
-            <?php
-            /*$query = "SELECT * FROM submissions";
-            $stmt = $pdo->prepare($query);
-            //$stmt->bindparam(":studentno", $studentno);
-            $stmt->execute();
-        
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            //return $result;
+            table th, table td {
+                padding: 8px;
+            }
 
-            if($result){
-                
-                foreach($result as $row){
-                    ?>
-                <tr>
-                    <td><?= $row['id']; ?></td>
-                    <td><?= $row['studentno']; ?></td>
-                    <td><?= $row['firstname']; ?></td>
-                    <td><?= $row['surname']; ?></td>
-                    <td><?= $row['gender']; ?></td>
-                    <td><?= $row['created_at']; ?></td>
-                    <td><?= $row['residence']; ?></td>
-                </tr>
-                    <?php
-                }
+            .action-buttons {
+                flex-direction: column;
+            }
 
-            } else {
-                ?>
-                <tr>
-                    <td colspan="7">  No records found</td>
-                </tr>
-                <?php
-            }*/
-            }?>
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Application Status</h1>
+        <p class="welcome-text">Welcome, <?= htmlspecialchars($student['firstname'] ?? 'User') ?></p>
 
-        </tbody>
-    </table>
-    <br>
+        <?php if ($student): ?>
+            <div class="student-info-box">
+                <h3>Your Information</h3>
+                <div class="info-row">
+                    <label>Name:</label>
+                    <value><?= htmlspecialchars($student['firstname'] . ' ' . $student['surname']) ?></value>
+                </div>
+                <div class="info-row">
+                    <label>Student Number:</label>
+                    <value><?= htmlspecialchars($student['student_number']) ?></value>
+                </div>
+            </div>
+        <?php endif; ?>
 
-    <p> If you have not registered for residence... <br>
-    <a href="../registration/index.php" class="button2">click here</a></p>
-    <br>
+        <h2>Your Applications</h2>
 
-    <form action="includes/logout.inc.php" method="post">
-        <button>Logout</button>
-    </form>
+        <?php if (empty($applications)): ?>
+            <div class="no-applications">
+                <p>You have not submitted any residence applications yet.</p>
+            </div>
+        <?php else: ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Application ID</th>
+                        <th>Residence</th>
+                        <th>Status</th>
+                        <th>Applied Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($applications as $app): ?>
+                        <tr>
+                            <td>#<?= htmlspecialchars($app['application_id']) ?></td>
+                            <td><?= htmlspecialchars($app['residence_name']) ?></td>
+                            <td>
+                                <span class="status-<?= htmlspecialchars($app['status']) ?>">
+                                    <?= ucfirst(htmlspecialchars($app['status'])) ?>
+                                </span>
+                            </td>
+                            <td><?= htmlspecialchars(date('M d, Y', strtotime($app['applied_at']))) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
 
-</div>
-
+        <div class="action-buttons">
+            <a href="../registration/index.php" class="btn btn-primary">Apply for Residence</a>
+            <form action="includes/logout.inc.php" method="post" style="flex: 1;">
+                <button type="submit" class="btn btn-secondary" style="width: 100%; margin: 0;">Logout</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
