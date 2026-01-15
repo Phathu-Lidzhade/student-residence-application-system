@@ -19,7 +19,7 @@
 
     <h2>wellcome to the home page</h2>
     <br><br><br>
-    <a href="complete/index.php" class="button">Click here</a>
+    <a href="student-signup/index.php" class="button">Click here</a>
 
     </div>
 </body>

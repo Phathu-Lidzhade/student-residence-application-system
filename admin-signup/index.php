@@ -72,7 +72,7 @@ require_once 'includes/login_view.inc.php';
     ?>
 </div>
 
-<p>To return to student page <a href="../complete/index.php" class="button2">click here</a></p>
+<p>To return to student page <a href="../student-signup/index.php" class="button2">click here</a></p>
 
 <!--<h3>Admin Logout</h3>
 

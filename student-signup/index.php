@@ -73,14 +73,16 @@ require_once 'includes/login_view.inc.php';
     ?>
     </div>
 
-<p> For Admin access <a href="../complete_admin/index.php" class="button1">Click here</a></p>
+<p> For Admin access <a href="../admin-signup/index.php" class="button1">Click here</a></p>
 
+<!--
 <h3>Student Logout</h3>
 
 <form action="includes/logout.inc.php" method="post">
     <button>Logout</button>
 </form>
 <br>
+-->
 
 <p>To return to the home page</p>
 <a href="../index.php" class="button1">Click here</a>
