@@ -1,0 +1,82 @@
+body{
+    font-family: poppins, sans-serif;
+    background: url(uni2.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    margin: auto;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.header{
+    background-color: #02028e;
+    color: white;
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    height: 50px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    visibility: hidden;
+}
+.header .logo{
+    font-size: 1rem;
+}
+.container{
+    background-color: rgb(243, 243, 243, 1);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 100px rgb(83, 101, 201);
+    width: 500px;
+    height: 200px;
+    text-align: center;
+}
+h2{
+    text-align: center;
+    color: #5062d9;
+}
+.button{
+    display: inline-block;
+    margin: 50px, 50px;
+    padding: 40px, 50px;
+    background-color: #5062d9;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.4s ease;
+}
+.button:hover{
+    background-color: #3319a6;
+    cursor: default;
+}
+
+@media(max-width: 500px){
+    body{
+        background-color: #fff;
+        background: none;
+    }
+    .container{
+        box-shadow: none;
+        background-color: #fff;
+    }
+    h2{
+        text-align: center;
+        color: #000000;
+        font-size: 20px;
+    }
+    .button{
+        transition: none;
+        background-color: #0061d8;
+    }
+    .header{
+        visibility: visible;
+    }
+}

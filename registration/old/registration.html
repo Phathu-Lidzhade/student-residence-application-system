@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--<link rel="stylesheet" href="styles.css" />-->
+    <title>Registration</title>
+  </head>
+  <body>
+    <h1>Registration Page</h1>
+
+    <form action="register.php" method="post">
+      <label for="studentnumber">Student Number</label>
+      <br />
+      <input
+        type="number"
+        name="studentnumber"
+        id="studentnumber"
+        placeholder="Student Number"
+      />
+
+      <br /><br />
+      <label for="firstname">First Name</label>
+      <br />
+      <input
+        type="text"
+        id="firstname"
+        name="firstname"
+        placeholder="First Name"
+      />
+      <br /><br />
+      <label for="surname">Surname</label>
+      <br />
+      <input type="text" id="surname" name="surname" placeholder="Surname" />
+
+      <br />
+      <!--<label for="message">Write anything</label>
+      <br />
+      <textarea
+        name="message"
+        id="message"
+        placeholder="write something. . ."
+        cols="30"
+        rows="10"
+      ></textarea>-->
+      <br />
+      <label>Select Gender</label>
+      <br />
+      <input type="radio" id="male" name="gender" value="m"/>
+      <label for="male">Male</label>
+      <input type="radio" id="female" name="gender" value="f"/>
+      <label for="female">Female</label>
+      <input type="radio" id="other" name="gender" value="o"/>
+      <label for="other">Other</label>
+      <br /><br />
+
+      <label for="residence">Select Residence</label>
+      <br />
+      <select name="residence" id="residence">
+        <option value="SELECT RESIDENCE....">SELECT RESIDENCE....</option>
+        <option value="River Estate">River Estate</option>
+        <option value="F3 Male">F3 Male</option>
+        <option value="Bernard Ncube Female">Bernard Ncube Female</option>
+        <option value="F6 New Female">F6 New Female</option>
+        <option value="Lost City Boys">Lost City Boys</option>
+        <option value="Mvelaphanda Male">Mvelaphanda Male</option>
+        <option value="Carousel Male">Carousel Male</option>
+        <option value="F4 Female">F4 Female</option>
+        <option value="F6 New Female">F6 New Female</option>
+        <option value="Lost City Girls">Lost City Girls</option>
+        <option value="Riverside Postgraduate">Riverside Postgraduate</option>
+        <option value="Mango grove">Mango grove</option>
+        <option value="F5 Female">F5 Female</option>
+        <option value="Mvelaphanda Female">Mvelaphanda Female</option>
+        <option value="F3 Male">F3 Male</option>
+      </select>
+      <br /><br />
+      <button type="submit">Submit</button>
+    </form>
+
+  </body>
+</html>
