@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 function get_username(object $pdo, string $username) {
-    $query = "SELECT username FROM students1 WHERE username = :username;";
+    $query = "SELECT username FROM students WHERE username = :username;";
     $stmt = $pdo->prepare($query);
     $stmt->bindparam(":username", $username);
     $stmt->execute();
@@ -12,8 +12,8 @@ function get_username(object $pdo, string $username) {
     return $result;
 }
 
-function set_user(object $pdo, string $firstname, string $surname, string $username, string $pwd){
-    $query = "INSERT INTO students1(firstname, surname, username, pwd) VALUES(:firstname, :surname, :username, :pwd);";
+function set_user(object $pdo, string $firstname, string $surname, string $username, string $pwd, string $student_number){
+    $query = "INSERT INTO students(firstname, surname, username, pwd, student_number) VALUES(:firstname, :surname, :username, :pwd, :student_number);";
     $stmt = $pdo->prepare($query);
 
     $options =[
@@ -25,5 +25,6 @@ function set_user(object $pdo, string $firstname, string $surname, string $usern
     $stmt->bindparam(":surname", $surname);
     $stmt->bindparam(":username", $username);
     $stmt->bindparam(":pwd", $hashedPwd);
+    $stmt->bindparam(":student_number", $student_number);
     $stmt->execute();
 }

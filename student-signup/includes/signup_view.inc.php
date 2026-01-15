@@ -23,6 +23,13 @@ function signup_inputs(){
     } echo '<br>';
 
     echo '<input type="password" name="pwd" placeholder="Password">';
+    echo '<br>';
+
+    if (isset($_SESSION["signup_data"]["student_number"])) {
+        echo '<input type="text" name="student_number" placeholder="Student Number" value="' . $_SESSION["signup_data"]["student_number"] . '">';
+    } else {
+        echo '<input type="text" name="student_number" placeholder="Student Number">';
+    } echo '<br>';
 }
 
 function check_signup_errors() {

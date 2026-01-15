@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-function is_input_empty(string $firstname, string $surname, string $username, string $pwd){
-    if (empty($firstname) || empty($surname) || empty($username) || empty($pwd)) {
+function is_input_empty(string $firstname, string $surname, string $username, string $pwd, string $student_number){
+    if (empty($firstname) || empty($surname) || empty($username) || empty($pwd) || empty($student_number)) {
         return true;
     }
     else {
@@ -20,6 +20,6 @@ function is_username_taken(object $pdo, string $username){
     }
 }
 
-function create_user(object $pdo, string $firstname, string $surname, string $username, string $pwd){
-    set_user($pdo, $firstname, $surname, $username, $pwd);
+function create_user(object $pdo, string $firstname, string $surname, string $username, string $pwd, string $student_number){
+    set_user($pdo, $firstname, $surname, $username, $pwd, $student_number);
 }

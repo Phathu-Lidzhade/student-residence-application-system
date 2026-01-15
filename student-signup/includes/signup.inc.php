@@ -6,6 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $surname = $_POST["surname"];
     $username = $_POST["username"];
     $pwd = $_POST["pwd"];
+    $student_number = $_POST["student_number"];
 
     try {
         
@@ -16,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // ERROR HANDLERS
         $errors = [];
 
-        if (is_input_empty($firstname, $surname, $username, $pwd)) {
+        if (is_input_empty($firstname, $surname, $username, $pwd, $student_number)) {
             $errors["empty_input"] = "Fill in all fields!";
         }
         if (is_username_taken($pdo, $username)) {
@@ -32,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 "firstname" => $firstname,
                 "surname" => $surname,
                 "username" => $username,
+                "student_number" => $student_number,
             ];
             $_SESSION["signup_data"] = $signupData;
 
@@ -39,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             die();
         }
 
-        create_user($pdo, $firstname, $surname, $username, $pwd);
+        create_user($pdo, $firstname, $surname, $username, $pwd, $student_number);
 
         header("Location: ../index.php?signup=success");
 
